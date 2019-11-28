@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <script src="/echarts.js"></script>
+<script src="/jquery-3.2.1.min.js"></script>
 <body>
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 600px;height:400px;" align="center"></div>
@@ -30,7 +31,38 @@
            }]
        };*/
 
-       var option = {
+       $.ajax({
+          url: 'http://localhost:8080/echarts/getMessageToShow',
+          data: {},
+          type: 'get',
+          dataType: 'json',
+          success: function(json){
+              var data = [];
+
+              for(var i in json){
+                  var obj = {};
+
+                  obj.name = json[i].name;
+                  obj.value = json[i].usableAmount;
+
+                  data.push(obj);
+              }
+
+              var option = {
+                  title: {
+                      text: 'Echarts饼状图'
+                  },
+                  series: {
+                      type: 'pie',
+                      data: data
+                  }
+              };
+
+              myChart.setOption(option);
+          }
+       });
+
+       /*var option = {
            title: {
                text: 'Echarts饼状图'
            },
@@ -46,7 +78,7 @@
            }
        };
 
-       myChart.setOption(option);
+       myChart.setOption(option);*/
     </script>
 </body>
 </html>
